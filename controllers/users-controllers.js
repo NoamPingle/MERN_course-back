@@ -4,17 +4,15 @@ const User = require("../models/user");
 
 const HttpError = require("../models/http-error");
 
-const DUMMY_USERS = [
-  {
-    id: "u1",
-    name: "Wart bute",
-    email: "test@test.com",
-    password: "test",
-  },
-];
-
-const getUsers = (req, res, next) => {
-  res.json({ users: DUMMY_USERS });
+const getUsers = async (req, res, next) => {
+  let users;
+  try {
+    users = await User.find({}, "-password");
+  } catch (err) {
+    const error = new HttpError("Fetching users failed. try again.", 500);
+    return next(error);
+  }
+  res.json({ users: users.map((user) => user.toObject({ getters: true })) });
 };
 
 const signup = async (req, res, next) => {
@@ -23,7 +21,7 @@ const signup = async (req, res, next) => {
     console.log(errors);
     return next(new HttpError("Invalid inputs, check your data.", 422));
   }
-  const { name, email, password, places } = req.body;
+  const { name, email, password } = req.body;
 
   let existingUser;
   try {
@@ -47,7 +45,7 @@ const signup = async (req, res, next) => {
     image:
       "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Frandomimagesbr%2F&psig=AOvVaw0lzWQytY948zoiWQr0J6K9&ust=1666884903015000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCOCAl6Wc_voCFQAAAAAdAAAAABAE",
     password,
-    places,
+    places: [],
   });
 
   try {
