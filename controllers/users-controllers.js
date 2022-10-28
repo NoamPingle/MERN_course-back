@@ -41,8 +41,7 @@ const signup = async (req, res, next) => {
   const createdUser = new User({
     name,
     email,
-    image:
-      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.facebook.com%2Frandomimagesbr%2F&psig=AOvVaw0lzWQytY948zoiWQr0J6K9&ust=1666884903015000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCOCAl6Wc_voCFQAAAAAdAAAAABAE",
+    image: "https://i.redd.it/iay4oudcp3a81.jpg",
     password,
     places: [],
   });
