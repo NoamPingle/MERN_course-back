@@ -1,7 +1,6 @@
 const { validationResult } = require("express-validator");
-const User = require("../models/user");
-
 const HttpError = require("../models/http-error");
+const User = require("../models/user");
 
 const getUsers = async (req, res, next) => {
   let users;
@@ -17,7 +16,6 @@ const getUsers = async (req, res, next) => {
 const signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors);
     return next(new HttpError("Invalid inputs, check your data.", 422));
   }
   const { name, email, password } = req.body;
@@ -73,7 +71,10 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ message: "Logged in!" });
+  res.json({
+    message: "Logged in!",
+    user: existingUser.toObject({ getters: true }),
+  });
 };
 
 exports.getUsers = getUsers;

@@ -1,11 +1,10 @@
 const { v4: uuid } = require("uuid");
 const { validationResult } = require("express-validator");
-
+const { default: mongoose } = require("mongoose");
 const HttpError = require("../models/http-error");
 const getCoordsForAddress = require("../util/location");
 const Place = require("../models/place");
 const User = require("../models/user");
-const { default: mongoose } = require("mongoose");
 
 const getPlaceById = async (req, res, next) => {
   const placeId = req.params.pid;
@@ -79,7 +78,6 @@ const createPlace = async (req, res, next) => {
   });
 
   let user;
-
   try {
     user = await User.findById(creator);
   } catch (err) {
